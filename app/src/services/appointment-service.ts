@@ -16,9 +16,11 @@ class AppointmentService implements IAppointmentService {
     return appointments.map((it) => it.name);
   }
 
-  public isExist(name: string): boolean {
-    const appointments = DI.appointmentRepo.getProviders({ name });
+  public isExist(name: string, date: Date): boolean {
+    console.log(name, date);
+    const appointments = DI.appointmentRepo.getProviders({ name, date });
     console.log(appointments);
+
     return !!appointments.length;
   }
 }

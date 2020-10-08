@@ -25,9 +25,9 @@ class AppointmentController {
     request: express.Request,
     response: express.Response
   ): void {
-    const { name } = request.body;
+    const { name, date } = request.body;
 
-    if (DI.appointmentService.isExist(name.toLowerCase())) {
+    if (!DI.appointmentService.isExist(name, date)) {
       return response.status(400).end();
     }
 

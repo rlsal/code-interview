@@ -30,7 +30,7 @@ export interface IAppointmentService {
     minScore?: number
   ) => Array<string>;
 
-  isExist(name: string): boolean;
+  isExist(name?: string, date?: Date): boolean;
 }
 
 export interface IAppointmentRepository {
