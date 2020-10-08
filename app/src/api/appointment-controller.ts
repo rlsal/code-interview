@@ -1,6 +1,8 @@
 import express from "express";
-import { AppointmentQuery } from "../types";
+import { validationResult } from "express-validator";
+
 import DI from "../di";
+import { AppointmentQuery } from "../types";
 
 class AppointmentController {
   public getProviders(
@@ -9,11 +11,12 @@ class AppointmentController {
   ): void {
     const { specialty, date, minScore } = request.query;
 
-    const data = DI.appointmentService.getProviders(
-      specialty ? specialty.toLowerCase() : undefined,
-      date ? new Date(Number(date)) : undefined,
-      minScore ? Number(minScore) : undefined
-    );
+    const errors = validationResult(request as express.Request);
+    if (!errors.isEmpty()) {
+      return response.status(400).end();
+    }
+
+    const data = DI.appointmentService.getProviders(specialty, date, minScore);
 
     response.send(data).end();
   }

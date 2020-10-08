@@ -7,16 +7,19 @@ class AppointmentRepository {
   public getProviders(filterQ: FilterProvidersQuery): AppointmentModel[] {
     const { name, specialty, minScore, date } = filterQ;
 
-    console.log(filterQ);
     const filterFns: Array<(it: AppointmentModel) => boolean> = [];
 
     if (name) {
-      filterFns.push((it: AppointmentModel) => it.name.toLowerCase() === name);
+      filterFns.push(
+        (it: AppointmentModel) => it.name.toLowerCase() === name.toLowerCase()
+      );
     }
 
     if (specialty) {
       filterFns.push((it: AppointmentModel) =>
-        it.specialties.map((x) => x.toLowerCase()).includes(specialty)
+        it.specialties
+          .map((x) => x.toLowerCase())
+          .includes(specialty.toLowerCase())
       );
     }
 
@@ -27,7 +30,7 @@ class AppointmentRepository {
     if (date) {
       filterFns.push((it: AppointmentModel) =>
         it.availableDates.some(
-          (av) => date.valueOf() > av.from && date.valueOf() <= av.to
+          (av) => date.valueOf() >= av.from && date.valueOf() <= av.to
         )
       );
     }
